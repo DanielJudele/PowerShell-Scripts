@@ -47,7 +47,7 @@ param(
 
 try{
     Write-Output "Connecting to `"$AdminSiteUrl`" site..."
-    $credentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials($Username, $Password)    
+    $credentials = New-Object System.Management.Automation.PSCredential($Username, $Password)    
     Connect-SPOService $AdminSiteUrl -Credential $credentials
 
     Write-Output "Getting `"$Title`" site design..."
