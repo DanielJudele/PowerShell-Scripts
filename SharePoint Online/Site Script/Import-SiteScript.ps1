@@ -42,7 +42,7 @@ param(
     [string] $Username,
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
-    [System.Security.SecureString]$Password,
+    [securestring]$Password,
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string] $Title,
@@ -68,19 +68,22 @@ function Add-SiteScript {
         [Parameter(Mandatory=$false)]
         [string]$Version
     )
-    
-    $content = Get-Content $Path -Raw
-    $PSBoundParameters.Add("Content", $content)
+
+    $arguments = @{} + $PSBoundParameters
+
+    $content = Get-Content -Path $Path -Raw
+    $arguments.Add("Content", $content)
+    $arguments.Remove("Path")
 
     if([string]::IsNullOrWhiteSpace($Description)){
-        $PSBoundParameters.Remove("Description")
+        $arguments.Remove("Description")
     }
 
     if([string]::IsNullOrWhiteSpace($Version)){
-        $PSBoundParameters.Remove("Version", $Version)
+        $arguments.Remove("Version")
     }
 
-    Add-SPOSiteScript $PSBoundParameters | Out-Null
+    Add-SPOSiteScript @arguments | Out-Null
 
     <#
     .SYNOPSIS
@@ -97,7 +100,6 @@ function Add-SiteScript {
         The version of the site script.
     #>
 }
-
 function Get-SiteScriptByTitle{
     param (
         [Parameter(Mandatory=$true)]
@@ -115,6 +117,7 @@ function Get-SiteScriptByTitle{
         The title of the site script.
     #>
 }
+
 function Set-SiteScript {
 	param (
         [Parameter(Mandatory=$true)]
@@ -129,18 +132,21 @@ function Set-SiteScript {
         [string]$Version        
     )
     
-    $content = Get-Content $Path -Raw
-    $PSBoundParameters.Add("Content", $content)
+    $arguments = @{} + $PSBoundParameters
+
+    $content = Get-Content -Path $Path -Raw
+    $arguments.Add("Content", $content)
+    $arguments.Remove("Path")
 
     if([string]::IsNullOrWhiteSpace($Description)){
-        $PSBoundParameters.Remove("Description")
+        $arguments.Remove("Description")
     }
 
     if([string]::IsNullOrWhiteSpace($Version)){
-        $PSBoundParameters.Remove("Version", $Version)
+        $arguments.Remove("Version")
     }
 
-    Set-SPOSiteScript $PSBoundParameters | Out-Null
+    Set-SPOSiteScript @arguments | Out-Null
 
     <#
     .SYNOPSIS
@@ -160,7 +166,13 @@ function Set-SiteScript {
     #>
 }
 
-try{    
+try{
+
+    $Path = $Path.Trim('"')
+    if(!(Test-Path -Path $Path)){
+        Throw "The `"$Path `" path is not valid."
+    }
+
     $credentials = New-Object System.Management.Automation.PSCredential($Username, $Password)
     Write-Output "Connecting to `"$AdminSiteUrl`" site..."    
     Connect-SPOService $AdminSiteUrl -Credential $credentials
@@ -170,7 +182,7 @@ try{
 
     if($siteScript){
         Write-Output "Updating`"$Title`" site script..."
-        Set-SiteScript -Indentity $siteScript.Id -Title $Title -Path $Path -Description $Description -Version $Version
+        Set-SiteScript -Id $siteScript.Id -Title $Title -Path $Path -Description $Description -Version $Version
     }else{
         Write-Output "Adding`"$Title`" site script..."
         Add-SiteScript -Title $Title -Path $Path -Description $Description -Version $Version
