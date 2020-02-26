@@ -19,8 +19,9 @@ Export-SiteScript.ps1 -AdminSiteUrl <https://<your sharepoint tenant>.sharepoint
 Export-SiteScript.ps1 -AdminSiteUrl <https://<your sharepoint tenant>.sharepoint.com/sites/<your site name> -Username "<your username>" -Password "<your password as secure string>" -Title "Site script sample" -Path "C:\temp\samplescriptcontent.json"
 .NOTES
     Author: Daniel Judele
-    Last Edit: 2020-02-24
+    Last Edit: 2020-02-26
     Version 1.0 - initial release
+    Version 1.1 - improvement: export all script properties
 .LINK
 https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spositescript?view=sharepoint-ps
 https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spositescript?view=sharepoint-ps 
