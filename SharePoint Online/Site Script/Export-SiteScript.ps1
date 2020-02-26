@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-Exports the content of a site script from a SharePoint tenant.
+Exports a site script from a SharePoint tenant.
 .DESCRIPTION
-Use this script to export the content of a script to SharePoint tenant. The script is identified using the Title parameter.
+Use this script to export all the properties of a SharePoint site script to SharePoint tenant. The SharePoint site script is identified based on the title parameter.
 .PARAMETER AdminSiteUrl
 The Administration(Admin) SharePoint Site Url, <https://<your sharepoint tenant>-admin.sharepoint.com.
 .PARAMETER Username
@@ -12,9 +12,8 @@ The Password to access the SharePoint Site.
 .PARAMETER Title
 The title of the site script.
 .PARAMETER Path
-The file path where the content of the script will be saved.
+The file path where the properties of the script will be saved.
 .EXAMPLE
-The following example is doing something:
 Export-SiteScript.ps1 -AdminSiteUrl <https://<your sharepoint tenant>.sharepoint.com/sites/<your site name> -Username "<your username>" -Password "<your password as secure string>" -Title "Site script tile" -Path "<the file path where the content of the script will be saved>"
 Export-SiteScript.ps1 -AdminSiteUrl <https://<your sharepoint tenant>.sharepoint.com/sites/<your site name> -Username "<your username>" -Password "<your password as secure string>" -Title "Site script sample" -Path "C:\temp\samplescriptcontent.json"
 .NOTES
@@ -22,6 +21,7 @@ Export-SiteScript.ps1 -AdminSiteUrl <https://<your sharepoint tenant>.sharepoint
     Last Edit: 2020-02-26
     Version 1.0 - initial release
     Version 1.1 - improvement: export all script properties
+    Version 1.2 - update help 
 .LINK
 https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spositescript?view=sharepoint-ps
 https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spositescript?view=sharepoint-ps 
