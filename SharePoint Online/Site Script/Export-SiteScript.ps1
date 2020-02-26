@@ -102,7 +102,7 @@ try{
 
     if($siteScript){
         Write-Output "Saving the content of the `"$Title`" site script to `"$Path`" ..."
-        (ConvertTo-Json -InputObject $siteScript.Content) | Out-File $Path 
+        (ConvertTo-Json -InputObject $siteScript) | Out-File $Path 
     }else{
         "Throw `"$Title`" site script could not be found."
     }
