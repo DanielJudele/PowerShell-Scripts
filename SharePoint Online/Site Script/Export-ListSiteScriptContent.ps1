@@ -20,6 +20,7 @@ Export-SiteScript.ps1 -AdminSiteUrl <https://<your sharepoint tenant>.sharepoint
     Author: Daniel Judele
     Last Edit: 2020-02-26
     Version 1.0 - initial release
+    Version 2.0 - added Common.SharePoint.PowerShell module
 .LINK
 https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spositescript?view=sharepoint-ps
 https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spositescript?view=sharepoint-ps 
@@ -31,16 +32,16 @@ https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-sposite
 param(	
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
-    [string] $AdminSiteUrl,    
+    [string] $AdminSiteUrl,
+    [Parameter(Mandatory=$true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $ListUrl,       
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string] $Username,
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [securestring]$Password,
-    [Parameter(Mandatory=$true)]
-    [ValidateNotNullOrEmpty()]
-    [string] $Title,
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string] $Path
@@ -52,18 +53,24 @@ try{
         Throw "The `"$Path `" path is not valid."
     }
 
-    $credentials = New-Object System.Management.Automation.PSCredential($Username, $Password)
-    Write-Output "Connecting to `"$AdminSiteUrl`" site..."    
-    Connect-SPOService $AdminSiteUrl -Credential $credentials
+    Write-Output "Connecting to `"$AdminSiteUrl`" site..."
 
-    Write-Output "Getting `"$Title`" site script..."
-    $siteScript = Get-CSPOSiteScriptAllProperties -Title $Title
+    try{
+        $cred = New-Object -TypeName System.Management.Automation.PSCredential -argumentlist $Username, $Password
+        Connect-SPOService -Url $AdminSiteUrl -Credential $cred
+           
+    }catch{
+        Connect-SPOService -Url $AdminSiteUrl
+    }
 
-    if($siteScript){
+    Write-Output "Getting site script content from `"$ListUrl`" list..."
+    $content = Get-CSPOListSiteScript -ListUrl $ListUrl
+
+    if($content){
         Write-Output "Saving the content of the `"$Title`" site script to `"$Path`" ..."
-        (ConvertTo-Json -InputObject $siteScript.Content) | Out-File $Path 
+        $content | Out-File $Path
     }else{
-        "Throw `"$Title`" site script could not be found."
+        "Could not get the site script content from `"$SharePointListUrl`" list url."
     }
 }catch{
     Write-Error $_.Exception.Message

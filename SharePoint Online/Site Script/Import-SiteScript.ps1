@@ -9,14 +9,8 @@ The Administration(Admin) SharePoint Site Url, <https://<your sharepoint tenant>
 The Username to access the SharePoint Site. The username should be tenant admin.
 .PARAMETER Password
 The Password to access the SharePoint Site.
-.PARAMETER Title
-The title of the site script.
 .PARAMETER Path
-The file path which contains the content of the site script.
-.PARAMETER Description
-The description of the site script.
-.PARAMETER Version
-The version of the site script.
+The file path which contains the properties of the site script.
 .EXAMPLE
 The following example is doing something:
 Import-SiteScript.ps1 -AdminSiteUrl <https://<your sharepoint tenant>.sharepoint.com/sites/<your site name> -Username "<your username>" -Password "<your password as secure string>" -Title "Site script tile " -Path "<the file path where is the content of the script" -Description "<the description of the script>" -Version "<Version of the script>"
@@ -178,7 +172,7 @@ try{
     Connect-SPOService $AdminSiteUrl -Credential $credentials
 
     Write-Output "Getting `"$Title`" site script..."
-    $siteScript = Get-SiteScriptByTitle -Title $Title
+    $siteScript = Get-CSPOSiteScriptByTitle -Title $Title
 
     if($siteScript){
         Write-Output "Updating`"$Title`" site script..."

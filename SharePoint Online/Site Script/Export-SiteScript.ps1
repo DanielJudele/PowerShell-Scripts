@@ -28,7 +28,7 @@ https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-sposite
 #>
 
 #Requires -Version 5.0
-#Requires -Modules Microsoft.Online.SharePoint.PowerShell
+#Requires -Modules Microsoft.Online.SharePoint.PowerShell, Common.SharePoint.PowerShell
 
 param(	
     [Parameter(Mandatory=$true)]
@@ -48,46 +48,6 @@ param(
     [string] $Path
 )
 
-function Get-SiteScriptByTitle{
-    param (
-        [Parameter(Mandatory=$true)]
-        [string]$Title
-    )
-    
-    return (Get-SPOSiteScript | Where-Object {$_.Title -eq $Title})
-
-    <#
-    .SYNOPSIS
-        Gets the site script by title.
-    .DESCRIPTION
-        The Get-SiteScriptByTitle is trying to find the site script using the title.
-    .PARAMETER Title
-        The title of the site script.
-    #>
-}
-
-function Get-SiteScriptWithAllPropertiesByTitle{
-    param (
-        [Parameter(Mandatory=$true)]
-        [string]$Title
-    )
-    $siteScript = Get-SiteScriptByTitle -Title $Title
-    if(!$siteScript){
-        "Throw `"$Title`" site script could not be found."
-    }
-
-    return (Get-SPOSiteScript $siteScript.Id)
-
-    <#
-    .SYNOPSIS
-        Gets all details of the site script by title.
-    .DESCRIPTION
-        The Get-SiteScriptWithAllDetailsByTitle returns all the properties of the site script. The title of the script is used to retrieve the site script from tenant.
-    .PARAMETER Title
-        The title of the site script.
-    #>
-}
-
 try{
     $Path = $Path.Trim('"')
     if(!(Test-Path -Path (Split-Path $Path))){
@@ -99,7 +59,7 @@ try{
     Connect-SPOService $AdminSiteUrl -Credential $credentials
 
     Write-Output "Getting `"$Title`" site script..."
-    $siteScript = Get-SiteScriptWithAllPropertiesByTitle -Title $Title
+    $siteScript = Get-CSPOSiteScriptAllProperties -Title $Title
 
     if($siteScript){
         Write-Output "Saving the content of the `"$Title`" site script to `"$Path`" ..."
