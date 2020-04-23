@@ -12,7 +12,7 @@ The Password to access the SharePoint Site.
 .PARAMETER Key
 The Propery bag name.
 Examples:
-Get-ListVersioning.ps1 -SharePointSiteUrl <https://<your sharepoint tenant>.sharepoint.com/sites/<your site name> -Username "<your username>" -Password "<your password as secure string>" -Key "<your site title>"
+Get-WebPropertyBag.ps1 -SharePointSiteUrl <https://<your sharepoint tenant>.sharepoint.com/sites/<your site name> -Username "<your username>" -Password "<your password as secure string>" -Key "<your property bag name>"
 .NOTES
     Author: Daniel Judele
     Last Edit: 2020-04-23
@@ -22,7 +22,7 @@ https://docs.microsoft.com/en-us/previous-versions/office/sharepoint-server/ee54
 #>
 
 #Requires -Version 5.0
-#Requires -Modules Microsoft.Online.SharePoint.PowerShell,Common.SharePoint.PowerShell
+#Requires -Modules Common.SharePoint.PowerShell
 
 param(	
     [Parameter(Mandatory=$true)]
@@ -43,7 +43,6 @@ try{
     $clientContext = Get-CSPOSiteContext -SiteUrl $SharePointSiteUrl -Username $Username -Password $Password
 
     Write-Output "Getting `"$Key`" property bag..."
-
     $rootWeb = $clientContext.Site.RootWeb
     $propertyBags = $clientContext.Site.RootWeb.AllProperties
     $clientContext.Load($rootWeb)
@@ -61,6 +60,7 @@ try{
     Write-Error $_.Exception.Message
 }
 finally{
+
     if($clientContext){
         Write-Output "Disposing client context..."
         $clientContext.Dispose()
@@ -68,5 +68,3 @@ finally{
 
     Write-Output "Done"
 }
-
-
