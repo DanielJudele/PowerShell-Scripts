@@ -24,7 +24,7 @@ https://docs.microsoft.com/en-us/previous-versions/office/sharepoint-server/ee54
 #>
 
 #Requires -Version 5.0
-#Requires -Modules @{ ModuleName="SharePointPnPPowerShellOnline"; ModuleVersion="3.20.2004.0" }
+#Requires -Modules Common.SharePoint.PowerShell
 
 param(	
     [Parameter(Mandatory=$true)]
