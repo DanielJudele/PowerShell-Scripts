@@ -1,27 +1,5 @@
 <#
 .SYNOPSIS
-Exports site columns from a SharePoint Site Collection.
-.DESCRIPTION
-Exports site columns from a SharePoint Site Collection to a Comma Separated Values file (.csv).
-.PARAMETER AdminSiteUrl
-The SharePoint Administration Site Url.
-.PARAMETER Username
-The Username to access the SharePoint Site.
-.PARAMETER Password
-The Username to access the SharePoint Site.
-.EXAMPLE
-The following example is doing something:
-Export-SiteCollumns.ps1 -SharePointSiteUrl <https://<your sharepoint tenant>.sharepoint.com/sites/<your site name> -Username "<your username>" -Password "<your password as secure string>" 
-.NOTES
-    Author: Daniel Judele
-    Last Edit: 2020-02-18
-    Version 1.0 - initial release
-.LINK
-https://docs.microsoft.com/en-us/previous-versions/office/sharepoint-csom/ee544713(v%3Doffice.15)
-#>
-
-<#
-.SYNOPSIS
 Permanently removes deleted sites from SharePoint Admin Recycle Bin Site based on the url specified in an Comma Separated Values file.
 .DESCRIPTION
 Permanently removes deleted sites from SharePoint Admin Recycle Bin Site based on the url specified in an Comma Separated Values file.
