@@ -49,6 +49,12 @@ try{
 
     $cert = New-SelfSignedCertificate -Subject "CN=$Name" -CertStoreLocation $CertStoreLocation -KeyExportPolicy Exportable
 
+    $thumbprint = $cert.Thumbprint
+    Write-Output "Certificate Thumbprint: $($thumbprint)"
+
+    $fullPath = Join-Path $ExportFolder "$Name-thumbprint.txt"
+    $thumbprint | Out-File -FilePath $fullPath
+
     $fullPath = Join-Path $ExportFolder "$Name.cer"
     Export-Certificate -Cert $cert -FilePath $fullPath
 
